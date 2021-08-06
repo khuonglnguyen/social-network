@@ -4,12 +4,20 @@ import { IActivity } from "../../../app/models/activity";
 
 interface IProps {
   activity: IActivity;
+  setEditMode: (editMode: boolean) => void;
 }
 
-export const ActivityDetails: React.FC<IProps> = ({ activity }) => {
+export const ActivityDetails: React.FC<IProps> = ({
+  activity,
+  setEditMode,
+}) => {
   return (
     <Card fluid>
-      <Image src={`/assets/categoryImages/${activity.category}.jpg`} wrapped ui={false}></Image>
+      <Image
+        src={`/assets/categoryImages/${activity.category}.jpg`}
+        wrapped
+        ui={false}
+      ></Image>
       <Card.Content>
         <Card.Header>{activity.title}</Card.Header>
         <Card.Meta>
@@ -18,7 +26,12 @@ export const ActivityDetails: React.FC<IProps> = ({ activity }) => {
         <Card.Description>{activity.description}</Card.Description>
         <Card.Content extra>
           <Button.Group widths={2}>
-            <Button basic color="blue" content="Edit"></Button>
+            <Button
+              onClick={() => setEditMode(true)}
+              basic
+              color="blue"
+              content="Edit"
+            ></Button>
             <Button basic color="grey" content="Cancel"></Button>
           </Button.Group>
         </Card.Content>
