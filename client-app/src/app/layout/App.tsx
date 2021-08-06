@@ -8,20 +8,31 @@ import { ActivityDashboard } from "../../features/activities/dashboard/ActivityD
 
 const App = () => {
   const [activities, setActivities] = useState<IActivity[]>([]);
+  const [selectedActivity, setSelectedActivity] = useState<IActivity | null>(
+    null
+  );
+
+  const handleSelectorActivity = (id: string) => {
+    setSelectedActivity(activities.filter((a) => a.id === id)[0]);
+  };
 
   useEffect(() => {
     axios
       .get<IActivity[]>("https://localhost:5001/api/activities")
       .then((response) => {
-        setActivities(response.data)
+        setActivities(response.data);
       });
   }, []);
 
   return (
     <Fragment>
       <NavBar></NavBar>
-      <Container style={{marginTop: '7em'}}>
-        <ActivityDashboard activities={activities}></ActivityDashboard>
+      <Container style={{ marginTop: "7em" }}>
+        <ActivityDashboard
+          activities={activities}
+          selectActivity={handleSelectorActivity}
+          selectedActivity={selectedActivity}
+        ></ActivityDashboard>
       </Container>
       <ul></ul>
     </Fragment>
