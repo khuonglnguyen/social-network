@@ -18,8 +18,9 @@ const App = () => {
     setEditMode(true);
   };
 
-  const handleSelectorActivity = (id: string) => {
+  const handleSelectActivity = (id: string) => {
     setSelectedActivity(activities.filter((a) => a.id === id)[0]);
+    setEditMode(false);
   };
 
   const handleCreateACtivity = (activity: IActivity) => {
@@ -29,7 +30,10 @@ const App = () => {
   };
 
   const handleEditAcitivity = (activity: IActivity) => {
-    setActivities([...activities.filter((a) => a.id !== activity.id), activity]);
+    setActivities([
+      ...activities.filter((a) => a.id !== activity.id),
+      activity,
+    ]);
     setSelectedActivity(activity);
     setEditMode(false);
   };
@@ -38,7 +42,12 @@ const App = () => {
     axios
       .get<IActivity[]>("https://localhost:5001/api/activities")
       .then((response) => {
-        setActivities(response.data);
+        let activities: IActivity[] = [];
+        response.data.forEach((activity) => {
+          activity.date = activity.date.split('.')[0];
+          activities.push(activity);
+        });
+        setActivities(activities);
       });
   }, []);
 
@@ -48,7 +57,7 @@ const App = () => {
       <Container style={{ marginTop: "7em" }}>
         <ActivityDashboard
           activities={activities}
-          selectActivity={handleSelectorActivity}
+          selectActivity={handleSelectActivity}
           selectedActivity={selectedActivity}
           editMode={editMode}
           setEditMode={setEditMode}
