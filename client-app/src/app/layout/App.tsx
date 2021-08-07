@@ -1,5 +1,5 @@
 import React, { useState, useEffect, Fragment } from "react";
-import { Container, Header, Icon, List } from "semantic-ui-react";
+import { Container } from "semantic-ui-react";
 import "semantic-ui-css/semantic.min.css";
 import axios from "axios";
 import { IActivity } from "../models/activity";
@@ -22,6 +22,18 @@ const App = () => {
     setSelectedActivity(activities.filter((a) => a.id === id)[0]);
   };
 
+  const handleCreateACtivity = (activity: IActivity) => {
+    setActivities([...activities, activity]);
+    setSelectedActivity(activity);
+    setEditMode(false);
+  };
+
+  const handleEditAcitivity = (activity: IActivity) => {
+    setActivities([...activities.filter((a) => a.id !== activity.id), activity]);
+    setSelectedActivity(activity);
+    setEditMode(false);
+  };
+
   useEffect(() => {
     axios
       .get<IActivity[]>("https://localhost:5001/api/activities")
@@ -41,6 +53,8 @@ const App = () => {
           editMode={editMode}
           setEditMode={setEditMode}
           setSelectedActivity={setSelectedActivity}
+          createActivity={handleCreateACtivity}
+          editActivity={handleEditAcitivity}
         ></ActivityDashboard>
       </Container>
       <ul></ul>
