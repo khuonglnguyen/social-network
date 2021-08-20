@@ -1,6 +1,7 @@
 using Application.Activities;
 using Domain;
 using MediatR;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -18,7 +19,6 @@ namespace API.Controllers
         {
             _mediator = mediator;
         }
-
         [HttpGet]
         public async Task<ActionResult<List<Activity>>> List()
         {
